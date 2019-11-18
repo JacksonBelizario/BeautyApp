@@ -1,14 +1,13 @@
 import React, {Fragment} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import {Routes} from '../routes';
-import {Snackbar} from "@material-ui/core";
-import {connect} from 'react-redux';
-import {compose} from 'recompose';
 import {Navbar} from './components/Navbar';
 import SnackbarWrapper from './components/SnackbarWrapper';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import '../assets/css/main.css'
+import 'react-perfect-scrollbar/dist/css/styles.css';
 
-const style = {
+const style = theme => ({
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -16,53 +15,23 @@ const style = {
         flexShrink: 1,
         flexBasis: 'auto',
         padding: 10,
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
     },
-};
-
-export const App = compose(
-    withStyles(style),
-    connect(state => ({
-        showSnackBar: {
-            message: state.showSnackBar.message,
-            variant: state.showSnackBar.variant,
-            show: state.showSnackBar.show,
-        }
-    }))
-)(({classes, showSnackBar, dispatch}) => {
-
-    function closeSnackBar(event, reason) {
-        if (reason === 'clickaway') {
-            return;
-        }
-  
-        dispatch({
-            type: 'SNACKBAR',
-            show: false,
-            message: ''
-        })
-    }
-
-    return (<Fragment>
-        <Navbar/>
-
-        <div className={classes.container}>
-            <Routes/>
-        </div>
-
-        <Snackbar
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showSnackBar.show}
-            autoHideDuration={3000}
-            onClose={closeSnackBar}
-            >
-            <SnackbarWrapper
-                onClose={closeSnackBar}
-                variant={showSnackBar.variant}
-                message={showSnackBar.message}
-            />
-        </Snackbar>
-    </Fragment>);
 });
+
+export const App = ({classes}) => (
+<Fragment>
+    <CssBaseline/>
+
+    <Navbar/>
+
+    <div className={classes.container}>
+        <Routes/>
+    </div>
+
+    <SnackbarWrapper />
+    
+</Fragment>);
+
+export default withStyles(style)(App);

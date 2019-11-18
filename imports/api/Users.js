@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-const UsersCollection = Meteor.users;
+export const UsersCollection = Meteor.users;
 
 Object.assign(UsersCollection, {
   save({ userId, user }) {
@@ -17,6 +17,7 @@ Object.assign(UsersCollection, {
 export const UserTypeDefs = `
 type Query {
   user : User
+  employees: [User]
 }
 
 type Mutation {
@@ -78,6 +79,11 @@ type Address {
 
 `;
 
+export const usersRoles = {
+  EMPLOYEE: 'employee',
+  CUSTOMER: 'customer',
+};
+
 export const UserResolver = {
   Query: {
     async user(root, args, { userId }) {
@@ -89,7 +95,6 @@ export const UserResolver = {
     async editUser(root, { user }, { userId }) {
       return UsersCollection.update({ _id: userId }, { $set: { ...user } });
     },
-
   },
 
   User: {
@@ -142,7 +147,6 @@ export const editUser = graphql(
       fetchPolicy: 'cache-and-network',
     },
     props: data => {
-      console.log({ data });
       return data;
     },
   });

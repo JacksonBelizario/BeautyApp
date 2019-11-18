@@ -3,16 +3,17 @@ import {Meteor} from 'meteor/meteor';
 import {withApollo} from 'react-apollo';
 import {Link, withRouter} from 'react-router-dom';
 import {compose, withHandlers} from 'recompose';
-import withStyles from '@material-ui/core/styles/withStyles';
+import {withStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
-import {FormControlLabel, Switch, Typography} from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-
-import Avatar from '@material-ui/core/Avatar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import {LockOpenOutlined, LockOutlined} from '@material-ui/icons';
+import {Avatar, Button, FormControlLabel, Switch, Typography} from '@material-ui/core';
+import {FingerprintOutlined as FingerprintIcon} from '@material-ui/icons';
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import { RouterPaths } from '../routes';
+import {RouterPaths} from '../routes';
+import Paper from './components/Paper.jsx';
+import {
+	Unlock as UnlockIcon
+} from 'react-feather';
+import {config} from '../config.js';
 
 const Login = ({onLogin, createAccount, classes, dispatch}) => {
     const [name, setName] = useState('');
@@ -39,88 +40,95 @@ const Login = ({onLogin, createAccount, classes, dispatch}) => {
     return (
 
         <main className={classes.main}>
-            <CssBaseline/>
-            <div className={classes.flex}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlined/>
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    App Beleza
-                </Typography>
-                <ValidatorForm
-                    onSubmit={handleSubmit}
-                    className={classes.form}>
-                    {
-                        !isLogin ? (
-                            <TextValidator
-                                fullWidth
-                                label="Nome"
-                                onChange={({target: {value}}) => {
-                                    setName(value);
-                                }}
-                                name="nome"
-                                value={name}
-                                validators={['required']}
-                                errorMessages={['Campo obrigatório']}
-                            />
-                        ) : ''
-                    }
-                    <TextValidator
-                        fullWidth
-                        label="Email"
-                        onChange={({target: {value}}) => {
-                            setEmail(value);
-                        }}
-                        name="email"
-                        value={email}
-                        validators={['required', 'isEmail']}
-                        errorMessages={['Campo obrigatório', 'email inválido']}
-                    />
-                    <TextValidator
-                        fullWidth
-                        label="Senha"
-                        type="password"
-                        value={password}
-                        onChange={({target: {value}}) => {
-                            setPassword(value);
-                        }}
-                        validators={['required']}
-                        errorMessages={['Campo é obrigatório']}
-                    />
-                    {
-                        !isLogin
-                            ? (<FormControlLabel control={
-                                <Switch color="primary" checked={accept} onChange={({target: {checked}}) => {
-                                    setAccept(checked)
-                                }}/>}
-                                                 label={<div>Aceito os <Link to='#'>Termos de Uso</Link></div>}/>)
-                            : ''
-                    }
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                    >
-                        <LockOpenOutlined className={classes.lockIcon}/>
-                        {isLogin ? 'Entrar' : 'Registrar'}
-                    </Button>
-                    <Button
-                        type="button"
-                        variant="outlined"
-                        className={classes.button}
-                        onClick={() => {
-                            setIsLogin(!isLogin)
-                        }}
-                    >
+            <Paper>
+                <div className={classes.flex}>
+                    <Avatar className={classes.avatar}>
+                        <FingerprintIcon/>
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        {config.appName}
+                    </Typography>
+                    <ValidatorForm
+                        onSubmit={handleSubmit}
+                        className={classes.form}>
                         {
-                            isLogin
-                                ? 'Se ainda não é cadastrado, clique aqui'
-                                : 'Se já é cadastrado, clique aqui'
+                            !isLogin ? (
+                                <TextValidator
+                                    fullWidth
+                                    className={classes.input}
+                                    variant="outlined"
+                                    label="Nome"
+                                    onChange={({target: {value}}) => {
+                                        setName(value);
+                                    }}
+                                    name="nome"
+                                    value={name}
+                                    validators={['required']}
+                                    errorMessages={['Campo obrigatório']}
+                                />
+                            ) : ''
                         }
-                    </Button>
-                </ValidatorForm>
-            </div>
+                        <TextValidator
+                            fullWidth
+                            className={classes.input}
+                            variant="outlined"
+                            label="Email"
+                            onChange={({target: {value}}) => {
+                                setEmail(value);
+                            }}
+                            name="email"
+                            value={email}
+                            validators={['required', 'isEmail']}
+                            errorMessages={['Campo obrigatório', 'email inválido']}
+                        />
+                        <TextValidator
+                            fullWidth
+                            className={classes.input}
+                            variant="outlined"
+                            label="Senha"
+                            type="password"
+                            value={password}
+                            onChange={({target: {value}}) => {
+                                setPassword(value);
+                            }}
+                            validators={['required']}
+                            errorMessages={['Campo é obrigatório']}
+                        />
+                        {
+                            !isLogin
+                                ? (<FormControlLabel control={
+                                    <Switch color="primary" checked={accept} onChange={({target: {checked}}) => {
+                                        setAccept(checked)
+                                    }}/>}
+                                                    label={<div>Aceito os <Link to='#'>Termos de Uso</Link></div>}/>)
+                                : ''
+                        }
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            className={classes.button}
+                        >
+                            <UnlockIcon className={classes.lockIcon}/>
+                            {isLogin ? 'Entrar' : 'Registrar'}
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="outlined"
+                            className={classes.button}
+                            onClick={() => {
+                                setIsLogin(!isLogin)
+                            }}
+                        >
+                            {
+                                isLogin
+                                    ? 'Se ainda não é cadastrado, clique aqui'
+                                    : 'Se já é cadastrado, clique aqui'
+                            }
+                        </Button>
+                    </ValidatorForm>
+                </div>
+            </Paper>
         </main>
     );
 };
@@ -138,7 +146,6 @@ const styles = theme => ({
         },
     },
     flex: {
-        marginTop: theme.spacing.unit * 8,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -154,6 +161,9 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+    },
+    input: {
+        margin: theme.spacing.unit,
     },
     button: {
         marginTop: theme.spacing.unit * 3,

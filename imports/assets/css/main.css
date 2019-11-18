@@ -1,6 +1,100 @@
-.App {
-    text-align: center;
+#app {
+    display: flex;
+    flex-flow: column;
+    min-height: 100%;
 }
+
+/*https://google.github.io/material-design-icons/*/
+.material-icons {
+    font-family: 'Material Icons', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px; /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+    box-shadow: 0 0 0 1000px white inset;
+}
+
+body {
+    font-family: Rubik,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
+    background-color: #fafafa;
+    color: #263238;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+textarea:focus,
+input:focus,
+select:focus {
+    box-shadow: 0 0 0 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+    outline: 0;
+}
+
+
+.control-label {
+    margin-top: 15px;
+    font-family: Rubik,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 20px;
+}
+
+.btn-login:hover {
+    opacity: 0.5;
+    transition-delay: 2s;
+}
+
+.login {
+    padding-top: 50px;
+    padding-bottom: 40px;
+}
+
+.btn-login {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px;
+    border-radius: 10px;
+}
+.container-field {
+    padding-top: 40px;
+    padding-bottom: 80px;
+}
+
+.btn-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #24292e;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 2rem;
+    text-decoration: none;
+}
+
 h1{
     color: rgb(255, 166, 0);
 }
@@ -19,17 +113,24 @@ h1{
 }
 
 .rbc-toolbar-label {
-    font-weight: bold;
     font-size: 22px;
-    color: #c2185b
+    color: #7b1fa2
 }
 
 .rbc-date-cell {
-    color: #e91e63;
+    color: #c2185b;
 }
 
 .rbc-today {
     background-color: rgb(196, 226, 250) !important;
+}
+
+.rbc-event {
+    background-color: #E30425;
+}
+
+.rbc-event.rbc-selected {
+    background-color: rgb(199, 1, 31);
 }
 
 @media (max-width: 480px) {

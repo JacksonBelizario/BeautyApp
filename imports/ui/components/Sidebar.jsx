@@ -9,16 +9,15 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import { withRouter } from 'react-router-dom';
+import {config} from '../../config.js';
 import {
-    Heart as HeartIcon,
     User as UserIcon,
-    Users as PeopleIcon,
     Layers as LayersIcon,
-    Scissors as ScissorsIcon,
     Circle as CircleIcon,
     ChevronDown as ChevronDownIcon,
     ChevronRight as ChevronRightIcon
 } from 'react-feather';
+import { MakeUpMirror } from '../../icons.js';
 
 import {RouterPaths} from '../../routes';
 
@@ -36,9 +35,9 @@ const menu = [
         type: "list",
         list: [
             {
-                title: 'Home',
+                title: config.appName,
                 to: RouterPaths.ROOT,
-                icon: <HeartIcon/>
+                icon: <MakeUpMirror/>
             }
         ]
     },
@@ -63,15 +62,19 @@ const menu = [
         list: [
             {
                 title: 'Funcionários',
-                to: RouterPaths.USER_PROFILE,
+                to: RouterPaths.EMPLOYEES,
             },
             {
-                title: 'Produtos',
-                to: RouterPaths.USER_PROFILE,
+                title: 'Clientes',
+                to: RouterPaths.CUSTOMERS,
             },
             {
                 title: 'Serviços',
-                to: RouterPaths.USER_PROFILE,
+                to: RouterPaths.SERVICES,
+            },
+            {
+                title: 'Produtos',
+                to: RouterPaths.PRODUCTS,
             },
         ]
     },

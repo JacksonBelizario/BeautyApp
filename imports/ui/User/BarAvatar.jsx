@@ -1,11 +1,9 @@
 import React, { Fragment, useState } from 'react';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Fade from '@material-ui/core/Fade';
-import { Avatar } from '@material-ui/core';
+import { Avatar, IconButton , Fade, Menu, MenuItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { userQuery } from '../../api/Users.js';
+import { userQuery } from '../../api/users';
 import { RouterPaths } from '../../routes';
+import {User as UserIcon} from 'react-feather';
 
 const avatarImage = (size, email) =>
     `https://api.adorable.io/avatars/${size}/${email}.png`;
@@ -29,11 +27,17 @@ const BarAvatarComponent = ({ userData: { user = {} } }) => {
 
   return (
     <Fragment>
-      <Avatar
+      {/* <Avatar
         alt={name}
         src={avatarImage(64, email)}
         onClick={e => setAnchorEl(e.currentTarget)}
-      />
+      /> */}
+      <IconButton
+        aria-haspopup="true"
+        color="inherit"
+        onClick={e => setAnchorEl(e.currentTarget)}>
+        <UserIcon />
+      </IconButton>
 
       <Menu
         id="profile-menu"

@@ -8,6 +8,7 @@ import {
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, TimePicker } from 'material-ui-pickers';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import Paper from '../components/Paper.jsx';
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -104,19 +105,20 @@ const MyCalendar = props => {
 
 
     return (<MuiPickersUtilsProvider utils={MomentUtils}>
-        <BigCalendar
-            localizer={localizer}
-            events={events}
-            views={["month", "week", "day", "agenda"]}
-            messages={messages}
-            timeslots={2}
-            defaultView="month"
-            defaultDate={new Date()}
-            selectable
-            onSelectEvent={handleEventSelected}
-            onSelectSlot={handleSlotSelected}
-        />
-
+        <Paper>
+            <BigCalendar
+                localizer={localizer}
+                events={events}
+                views={["month", "week", "day", "agenda"]}
+                messages={messages}
+                timeslots={2}
+                defaultView="month"
+                defaultDate={new Date()}
+                selectable
+                onSelectEvent={handleEventSelected}
+                onSelectSlot={handleSlotSelected}
+            />
+        </Paper>
         {/* Material-ui Modal for booking new appointment */}
         <Dialog open={openSlot} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Agendar em: {moment(start).format(
@@ -162,7 +164,7 @@ const MyCalendar = props => {
             <Button onClick={handleClose}>
                 Cancelar
             </Button>
-            <Button color="secondary"
+            <Button color="primary"
                 onClick={() => {
                     setNewAppointment(), handleClose();
                 }}>
@@ -216,13 +218,13 @@ const MyCalendar = props => {
                 Cancelar
             </Button>
             <Button
-                color="primary"
+                color="secondary"
                 onClick={() => {
                     deleteEvent(), handleClose();
                 }}>
                 Remover
             </Button>
-            <Button color="secondary"
+            <Button color="primary"
                 onClick={() => {
                     updateEvent(), handleClose();
                 }}>

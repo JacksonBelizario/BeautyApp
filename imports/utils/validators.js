@@ -52,6 +52,7 @@ export const validateCPF = CPF => new validateCpf( CPF ).validate();
   
 const TYPE_VALIDATORS = {
     cpf: (cpf) => !validateCPF(cpf) ? 'CPF inválido' : null,
+    email: (email) => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email) ?  null : 'Email inválido'
 }
 
 export const validator = (type, value, required = false) => {

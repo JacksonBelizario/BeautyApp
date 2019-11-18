@@ -2,7 +2,7 @@
   "name": "appbeleza",
   "private": true,
   "scripts": {
-    "start": "meteor run",
+  "start": "cross-env MONGO_URL=\"mongodb://beauty-staging:gPu63BkV16D7aKJs@beautyapp-shard-00-00-waeqs.mongodb.net:27017,beautyapp-shard-00-01-waeqs.mongodb.net:27017,beautyapp-shard-00-02-waeqs.mongodb.net:27017/test?ssl=true&replicaSet=BeautyApp-shard-0&authSource=admin&retryWrites=true\" meteor run",
     "lint": "eslint . --fix",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
@@ -39,6 +39,7 @@
     "react-feather": "^1.1.6",
     "react-jss": "^8.6.1",
     "react-material-ui-form-validator": "^2.0.8",
+    "react-perfect-scrollbar": "^1.5.2",
     "react-redux": "^6.0.1",
     "react-router-dom": "^4.3.1",
     "react-text-mask": "^5.4.3",
@@ -57,6 +58,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^9.0.0",
+    "cross-env": "^5.2.0",
     "eslint": "^5.16.0",
     "eslint-config-react-app": "^4.0.0",
     "eslint-config-tecsinapse-js": "^1.0.6",
@@ -65,6 +67,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-react-hooks": "^1.5.0",
+    "faker": "^4.1.0",
     "prettier-eslint": "^8.8.2"
   },
   "eslintConfig": {
