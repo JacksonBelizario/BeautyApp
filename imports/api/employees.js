@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { UsersCollection, usersRoles } from './users';
+import { Roles } from 'meteor/alanning:roles';
 
 export const EmployeeTypeDefs = `
 type Query {
@@ -48,7 +49,7 @@ type Address {
 export const EmployeeResolver = {
   Query: {
     async employees() {
-        return UsersCollection.find({ roles : { [Roles.GLOBAL_GROUP]: [usersRoles.EMPLOYEE] }}).fetch();
+        return Roles.getUsersInRole(usersRoles.EMPLOYEE);
     },
   },
 
@@ -61,7 +62,8 @@ export const EmployeeResolver = {
                 profile,
             }
         );
-        Roles.addUsersToRoles(employeeId, usersRoles.EMPLOYEE, Roles.GLOBAL_GROUP);
+        Roles.createRole(usersRoles.EMPLOYEE, {unlessExists: true});
+        Roles.addUsersToRoles(employeeId, usersRoles.EMPLOYEE);
         return employeeId;
     },
     async editEmployee(root, {id, employee: { profile }}) {
@@ -69,7 +71,11 @@ export const EmployeeResolver = {
     },
     async removeEmployee(root, { id }) {
         // retorna a quantidade removida
-        return UsersCollection.remove({ _id: id, roles : { [Roles.GLOBAL_GROUP]: [usersRoles.EMPLOYEE] } });
+        if (Roles.userIsInRole(id, usersRoles.EMPLOYEE)) {
+            Roles.removeUsersFromRoles(id, usersRoles.EMPLOYEE);
+            return UsersCollection.remove({ _id: id });
+        }
+        return 0;
     },
 
   },
@@ -95,10 +101,10 @@ const EMPLOYEES_QUERY = gql`
 `;
 
 export const employeesQuery = graphql(EMPLOYEES_QUERY, {
-  name: 'employeesData',
-  options: {
-      fetchPolicy: 'cache-and-network',
-  }
+    name: 'employeesData',
+    options: {
+        fetchPolicy: 'cache-and-network',
+    }
 });
 
 const refetchQueries = [{ query: EMPLOYEES_QUERY }];

@@ -102,8 +102,8 @@ const styles = theme => ({
 
 const Employees = ({classes, employeesData: { employees, loading }, removeEmployee}) => {
 
-    console.log({employees});
-    if (loading || !employees) {
+    employees = employees || [];
+    if (loading) {
       return <Loading />;
     }
 

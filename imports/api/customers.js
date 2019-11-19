@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { UsersCollection, usersRoles } from './users';
+import { Roles } from 'meteor/alanning:roles';
 
 export const CustomerTypeDefs = `
 type Query {
@@ -48,7 +49,7 @@ type Address {
 export const CustomerResolver = {
   Query: {
     async customers() {
-        return UsersCollection.find({ roles : { [Roles.GLOBAL_GROUP]: [usersRoles.CUSTOMER] }}).fetch();
+        return Roles.getUsersInRole(usersRoles.CUSTOMER);
     },
   },
 
@@ -61,7 +62,8 @@ export const CustomerResolver = {
                 profile,
             }
         );
-        Roles.addUsersToRoles(customerId, usersRoles.CUSTOMER, Roles.GLOBAL_GROUP);
+        Roles.createRole(usersRoles.CUSTOMER, {unlessExists: true});
+        Roles.addUsersToRoles(customerId, usersRoles.CUSTOMER);
         return customerId;
     },
     async editCustomer(root, {id, customer: { profile }}) {
@@ -69,7 +71,11 @@ export const CustomerResolver = {
     },
     async removeCustomer(root, { id }) {
         // retorna a quantidade removida
-        return UsersCollection.remove({ _id: id, roles : { [Roles.GLOBAL_GROUP]: [usersRoles.CUSTOMER] } });
+        if (Roles.userIsInRole(id, usersRoles.CUSTOMER)) {
+            Roles.removeUsersFromRoles(id, usersRoles.CUSTOMER);
+            return UsersCollection.remove({ _id: id });
+		}
+		return 0;
     },
 
   },

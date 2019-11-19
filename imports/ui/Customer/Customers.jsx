@@ -102,8 +102,8 @@ const styles = theme => ({
 
 const Customers = ({classes, customersData: { customers, loading }, removeCustomer}) => {
 
-    console.log({customers});
-    if (loading || !customers) {
+    customers = customers || [];
+    if (loading) {
       return <Loading />;
     }
 

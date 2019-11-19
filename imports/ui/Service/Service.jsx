@@ -54,6 +54,7 @@ const ServiceComponent = ({open, setOpen, createService, editService, dispatch, 
                   variables: {
                     service: {
                       name,
+                      amount,
                       duration
                     },
                   },
