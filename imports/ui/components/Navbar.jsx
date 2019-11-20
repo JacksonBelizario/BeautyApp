@@ -16,7 +16,7 @@ import {
 const styles = theme => ({
     root: {
         // flexGrow: 1,
-        margin: theme.spacing.unit,
+        margin: theme.spacing(),
     },
     appBar: {
         borderRadius: '8px',

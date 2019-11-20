@@ -5,6 +5,7 @@ import {
     Button, TextField, Grid,
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@material-ui/core';
+import CustomerSelect from './components/CustomerSelect';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, TimePicker } from 'material-ui-pickers';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -126,6 +127,7 @@ const MyCalendar = props => {
                 )}</DialogTitle>
             <DialogContent>
             <Grid container direction="column">
+                <CustomerSelect />
                 <TextField
                     autoFocus
                     margin="dense"

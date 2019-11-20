@@ -15,8 +15,8 @@ const style = theme => ({
         flexShrink: 1,
         flexBasis: 'auto',
         padding: 10,
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
+        marginLeft: theme.spacing(),
+        marginRight: theme.spacing(),
     },
 });
 

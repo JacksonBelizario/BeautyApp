@@ -9,8 +9,8 @@ import Paper from './components/Paper.jsx';
 
 const styles = theme => ({
   root: {
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(),
   },
   spacer: {
     flex: '1 1 100%',
