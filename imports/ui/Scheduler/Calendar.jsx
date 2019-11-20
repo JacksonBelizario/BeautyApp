@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import CustomerSelect from './components/CustomerSelect';
 import MomentUtils from '@date-io/moment';
-import { MuiPickersUtilsProvider, TimePicker } from 'material-ui-pickers';
+import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Paper from '../components/Paper.jsx';
 
