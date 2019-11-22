@@ -42,6 +42,7 @@ type User {
   profile: Profile
   emails: [Email]
   address: Address
+  roles: [String]
 }
 
 type Profile {

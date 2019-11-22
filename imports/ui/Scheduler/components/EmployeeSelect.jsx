@@ -6,19 +6,18 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import debounce from 'lodash/debounce';
-import { CUSTOMERS_SEARCH } from '../../../api/customers';
+import { EMPLOYEES_SEARCH } from '../../../api/employees';
 
-const CustomerSelect = ({client, onChange}) => {
+const EmployeeSelect = ({client, onChange}) => {
 
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
-
     
-    const searchCustomers = async (filter) => {
+    const searchEmployees = async (filter) => {
       const { data } = await client.query({
-        query: CUSTOMERS_SEARCH,
+        query: EMPLOYEES_SEARCH,
         variables: { filter },
       });
       return data;
@@ -32,9 +31,9 @@ const CustomerSelect = ({client, onChange}) => {
     const search = useMemo(
         () =>
         debounce(async (input, callback) => {
-            const {searchCustomers: customers} = await searchCustomers(input);
-            console.log({customers});
-            callback(customers);
+            const {searchEmployees: employees} = await searchEmployees(input);
+            console.log({employees});
+            callback(employees);
         }, 400),
         [],
     );
@@ -79,7 +78,7 @@ const CustomerSelect = ({client, onChange}) => {
           renderInput={params => (
             <TextField
               {...params}
-              label="Cliente"
+              label="Funcionário"
               fullWidth
               onChange={handleChange}
               InputProps={{
@@ -98,4 +97,4 @@ const CustomerSelect = ({client, onChange}) => {
       );
 }
 
-export default withApollo(CustomerSelect);
+export default withApollo(EmployeeSelect);

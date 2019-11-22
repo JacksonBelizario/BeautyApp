@@ -7,6 +7,7 @@ import { Roles } from 'meteor/alanning:roles';
 export const CustomerTypeDefs = `
 type Query {
   customers: [User]
+  searchCustomers(filter: String): [User]
 }
 
 type Mutation {
@@ -50,6 +51,13 @@ export const CustomerResolver = {
   Query: {
     async customers() {
         return Roles.getUsersInRole(usersRoles.CUSTOMER);
+    },
+    async searchCustomers(root, {filter}) {
+		var ids = Roles.getUserAssignmentsForRole(usersRoles.CUSTOMER).fetch().map(a => a.user._id);
+	
+		let filterRegex = new RegExp(filter, "i");
+		
+		return UsersCollection.find({$and: [{ _id: { $in: ids }}, { 'profile.name': filterRegex } ]});
     },
   },
 
@@ -146,3 +154,23 @@ export const removeCustomerMutation = graphql(
         options: { refetchQueries },
     }
 );
+
+export const CUSTOMERS_SEARCH = gql`
+  query searchCustomers($filter: String) {
+    searchCustomers(filter: $filter) {
+      _id
+      profile {
+        name
+        phoneNumber
+        socialNumber
+        birthday
+        gender
+      }
+      emails {
+        address
+        verified
+	  },
+	  roles
+    }
+  }
+`;

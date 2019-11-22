@@ -6,6 +6,7 @@ import {
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@material-ui/core';
 import CustomerSelect from './components/CustomerSelect';
+import EmployeeSelect from './components/EmployeeSelect';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -42,6 +43,8 @@ const MyCalendar = props => {
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
     const [desc, setDesc] = useState("");
+    const [employee, setEmployee] = useState("");
+    const [customer, setCustomer] = useState("");
     const [openSlot, setOpenSlot] = useState(false);
     const [openEvent, setOpenEvent] = useState(false);
     const [clickedEvent, setClicketEvent] = useState({});
@@ -127,7 +130,14 @@ const MyCalendar = props => {
                 )}</DialogTitle>
             <DialogContent>
             <Grid container direction="column">
-                <CustomerSelect />
+                <EmployeeSelect 
+                    onChange={(value) => {
+                        setEmployee(value);
+                    }} />
+                <CustomerSelect 
+                    onChange={(value) => {
+                        setCustomer(value);
+                    }} />
                 <TextField
                     autoFocus
                     margin="dense"
