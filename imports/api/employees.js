@@ -6,6 +6,7 @@ import { Roles } from 'meteor/alanning:roles';
 
 export const EmployeeTypeDefs = `
 type Query {
+  employee(userId: String): User
   employees: [User]
   searchEmployees(filter: String): [User]
 }
@@ -49,6 +50,9 @@ type Address {
 
 export const EmployeeResolver = {
   Query: {
+    async employee(root, { userId }) {
+      return UsersCollection.findOne({ _id: userId });
+    },
     async employees() {
         return Roles.getUsersInRole(usersRoles.EMPLOYEE);
     },
@@ -158,6 +162,26 @@ export const removeEmployeeMutation = graphql(
 export const EMPLOYEES_SEARCH = gql`
   query searchEmployees($filter: String) {
     searchEmployees(filter: $filter) {
+      _id
+      profile {
+        name
+        phoneNumber
+        socialNumber
+        birthday
+        gender
+      }
+      emails {
+        address
+        verified
+	  },
+	  roles
+    }
+  }
+`;
+
+export const GET_EMPLOYEE = gql`
+  query employee($userId: String) {
+    employee(userId: $userId) {
       _id
       profile {
         name

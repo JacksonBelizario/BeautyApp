@@ -6,6 +6,7 @@ import { Roles } from 'meteor/alanning:roles';
 
 export const CustomerTypeDefs = `
 type Query {
+  customer(userId: String): User
   customers: [User]
   searchCustomers(filter: String): [User]
 }
@@ -49,6 +50,9 @@ type Address {
 
 export const CustomerResolver = {
   Query: {
+    async customer(root, { userId }) {
+      return UsersCollection.findOne({ _id: userId });
+    },
     async customers() {
         return Roles.getUsersInRole(usersRoles.CUSTOMER);
     },
@@ -158,6 +162,27 @@ export const removeCustomerMutation = graphql(
 export const CUSTOMERS_SEARCH = gql`
   query searchCustomers($filter: String) {
     searchCustomers(filter: $filter) {
+      _id
+      profile {
+        name
+        phoneNumber
+        socialNumber
+        birthday
+        gender
+      }
+      emails {
+        address
+        verified
+	  },
+	  roles
+    }
+  }
+`;
+
+
+export const GET_CUSTOMER = gql`
+  query customer($userId: String) {
+    customer(userId: $userId) {
       _id
       profile {
         name

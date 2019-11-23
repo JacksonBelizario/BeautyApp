@@ -73,19 +73,21 @@ const MyCalendar = props => {
         setEnd(event.end);
         setTitle(event.title);
         setDesc(event.desc);
+        setCustomer(event.customer);
+        setEmployee(event.employee);
     }
 
     // Onclick callback function that pushes new appointment into events array.
     const setNewAppointment = () => {
       // localStorage.setItem("cachedEvents", JSON.stringify(events));
-      setEvents([...events, { title, start, end, desc }]);
+      setEvents([...events, { title, start, end, desc, employee, customer }]);
     }
   
     //  Updates Existing Appointments Title and/or Description
     const updateEvent = () => {
       const index = events.findIndex(event => event === clickedEvent);
       const updatedEvent = [...events];
-      updatedEvent[index] = { title, start, end, desc };
+      updatedEvent[index] = { title, start, end, desc, employee, customer };
       // localStorage.setItem("cachedEvents", JSON.stringify(updatedEvent));
       setEvents(updatedEvent);
     }
@@ -130,46 +132,50 @@ const MyCalendar = props => {
                 )}</DialogTitle>
             <DialogContent>
             <Grid container direction="column">
-                <EmployeeSelect 
-                    onChange={(value) => {
-                        setEmployee(value);
-                    }} />
-                <CustomerSelect 
-                    onChange={(value) => {
-                        setCustomer(value);
-                    }} />
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    label="Título"
-                    fullWidth
-                    onChange={({target: {value}}) => {
-                        setTitle(value);
-                    }}
-                />
-                <TextField
-                    label="Descrição"
-                    fullWidth
-                    onChange={({target: {value}}) => {
-                        setDesc(value);
-                    }}
-                />
-                <TimePicker
-                    margin="normal"
-                    label="Hora Inicial"
-                    cancelLabel="CANCELAR"
-                    ampm={false}
-                    value={start}
-                    onChange={handleStartTime}
-                />
-                <TimePicker
-                    margin="normal"
-                    label="Hora Final"
-                    cancelLabel="CANCELAR"
-                    ampm={false}
-                    value={end}
-                    onChange={handleEndTime}
-                />
+                <form autoComplete={"off"}>
+                    <EmployeeSelect
+                        onChange={(value) => {
+                            setEmployee(value);
+                        }} />
+                    <CustomerSelect
+                        onChange={(value) => {
+                            setCustomer(value);
+                        }} />
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label="Título"
+                        fullWidth
+                        value={title}
+                        onChange={({target: {value}}) => {
+                            setTitle(value);
+                        }}
+                    />
+                    <TextField
+                        label="Descrição"
+                        fullWidth
+                        value={desc}
+                        onChange={({target: {value}}) => {
+                            setDesc(value);
+                        }}
+                    />
+                    <TimePicker
+                        margin="normal"
+                        label="Hora Inicial"
+                        cancelLabel="CANCELAR"
+                        ampm={false}
+                        value={start}
+                        onChange={handleStartTime}
+                    />
+                    <TimePicker
+                        margin="normal"
+                        label="Hora Final"
+                        cancelLabel="CANCELAR"
+                        ampm={false}
+                        value={end}
+                        onChange={handleEndTime}
+                    />
+                </form>
             </Grid>
             </DialogContent>
             <DialogActions>
@@ -191,39 +197,51 @@ const MyCalendar = props => {
                     "DD MMMM, YYYY"
                 )}</DialogTitle>
             <DialogContent>
-            <TextField
-                autoFocus
-                margin="dense"
-                label="Título"
-                fullWidth
-                onChange={({target: {value}}) => {
-                    setTitle(value);
-                }}
-            />
-            <br />
-            <TextField
-                label="Descrição"
-                fullWidth
-                onChange={({target: {value}}) => {
-                    setDesc(value);
-                }}
-            />
-            <TimePicker
-                margin="normal"
-                label="Hora Inicial"
-                cancelLabel="CANCELAR"
-                ampm={false}
-                value={start}
-                onChange={handleStartTime}
-            />
-            <TimePicker
-                margin="normal"
-                label="Hora Final"
-                cancelLabel="CANCELAR"
-                ampm={false}
-                value={end}
-                onChange={handleEndTime}
-            />
+                <EmployeeSelect
+                    defaultValue={employee}
+                    onChange={(value) => {
+                        setEmployee(value);
+                    }} />
+                <CustomerSelect
+                    defaultValue={customer}
+                    onChange={(value) => {
+                        setCustomer(value);
+                    }} />
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    label="Título"
+                    value={title}
+                    fullWidth
+                    onChange={({target: {value}}) => {
+                        setTitle(value);
+                    }}
+                />
+                <br />
+                <TextField
+                    label="Descrição"
+                    value={desc}
+                    fullWidth
+                    onChange={({target: {value}}) => {
+                        setDesc(value);
+                    }}
+                />
+                <TimePicker
+                    margin="normal"
+                    label="Hora Inicial"
+                    cancelLabel="CANCELAR"
+                    ampm={false}
+                    value={start}
+                    onChange={handleStartTime}
+                />
+                <TimePicker
+                    margin="normal"
+                    label="Hora Final"
+                    cancelLabel="CANCELAR"
+                    ampm={false}
+                    value={end}
+                    onChange={handleEndTime}
+                />
             </DialogContent>
             <DialogActions>
             <Button onClick={handleClose}>

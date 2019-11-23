@@ -8,13 +8,13 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import debounce from 'lodash/debounce';
 import { EMPLOYEES_SEARCH } from '../../../api/employees';
 
-const EmployeeSelect = ({client, onChange}) => {
+const EmployeeSelect = ({client, defaultValue, onChange}) => {
 
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
-    
+
     const searchEmployees = async (filter) => {
       const { data } = await client.query({
         query: EMPLOYEES_SEARCH,
@@ -62,16 +62,18 @@ const EmployeeSelect = ({client, onChange}) => {
 
     return (
         <Autocomplete
-          id="customer-select"
           style={{ width: "100%" }}
           open={open}
+          defaultValue={defaultValue}
           onOpen={() => {
             setOpen(true);
           }}
           onClose={() => {
             setOpen(false);
           }}
-          onChange={(event, newValue) => { onChange(newValue); }}
+          onChange={(event, employee) => {
+            onChange(employee);
+          }}
           getOptionLabel={option => option.profile.name}
           options={options}
           loading={loading}

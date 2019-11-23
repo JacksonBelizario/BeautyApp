@@ -17,7 +17,6 @@ Object.assign(UsersCollection, {
 export const UserTypeDefs = `
 type Query {
   user : User
-  employees: [User]
 }
 
 type Mutation {
@@ -114,7 +113,7 @@ export const editUser = graphql(
     { name: 'editUser' }
   );
 
-  const USER_QUERY = gql`
+const USER_QUERY = gql`
     query User {
       user {
         _id
@@ -140,9 +139,9 @@ export const editUser = graphql(
         }
       }
     }
-  `;
+`;
 
-  export const userQuery = graphql(USER_QUERY, {
+export const userQuery = graphql(USER_QUERY, {
     name: 'userData',
     options: {
       fetchPolicy: 'cache-and-network',
@@ -150,4 +149,4 @@ export const editUser = graphql(
     props: data => {
       return data;
     },
-  });
+});
