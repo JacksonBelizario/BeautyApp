@@ -267,7 +267,7 @@ const Customers = ({classes, customersData: { customers, loading }, removeCustom
                         direction="column"
                         justify="center"
                         alignItems="center"
-                        spacing={24} >
+                        spacing={2} >
                         <Grid item>
                             <LoaderIcon size={124}  />
                         </Grid>

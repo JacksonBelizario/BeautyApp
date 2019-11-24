@@ -173,9 +173,8 @@ export const EMPLOYEES_SEARCH = gql`
       emails {
         address
         verified
-	  },
-	  roles
-    }
+	    }
+	  }
   }
 `;
 
@@ -193,8 +192,7 @@ export const GET_EMPLOYEE = gql`
       emails {
         address
         verified
-	  },
-	  roles
-    }
+	    }
+	  }
   }
 `;

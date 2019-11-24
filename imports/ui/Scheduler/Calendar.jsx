@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { compose } from 'recompose';
 import BigCalendar from 'react-big-calendar'
 import moment from '../../utils/moment'
 import {
@@ -11,6 +12,8 @@ import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Paper from '../components/Paper.jsx';
+import Loading from '../components/Loading';
+import { eventsQuery, createEventMutation, editEventMutation, removeEventMutation } from '../../api/events';
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -37,8 +40,16 @@ const messages = {
     showMore: total => `Mostrar +${total}`,
   }
 
-const MyCalendar = props => {
-    const [events, setEvents] = useState([]);
+const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, removeEvent}) => {
+
+    events = events || [];
+    if (loading) {
+      return <Loading />;
+    }
+
+    console.log({events});
+
+    // const [events, setEvents] = useState([]);
     const [title, setTitle] = useState("");
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
@@ -57,7 +68,6 @@ const MyCalendar = props => {
 
     //  Allows user to click on calendar slot and handles if appointment exists
     const handleSlotSelected = (slotInfo) => {
-      console.log("Real slotInfo", slotInfo);
       setTitle("");
       setDesc("");
       setStart(slotInfo.start);
@@ -66,7 +76,6 @@ const MyCalendar = props => {
     }
 
     const handleEventSelected = (event) => {
-        console.log("event", event);
         setOpenEvent(true);
         setClicketEvent(event);
         setStart(event.start);
@@ -78,27 +87,58 @@ const MyCalendar = props => {
     }
 
     // Onclick callback function that pushes new appointment into events array.
-    const setNewAppointment = () => {
-      // localStorage.setItem("cachedEvents", JSON.stringify(events));
-      setEvents([...events, { title, start, end, desc, employee, customer }]);
+    const setNewAppointment = async () => {
+        try {
+            const { data } = await createEvent({
+                variables: {
+                    event: {
+                        start: moment(start).format(moment.HTML5_FMT.DATETIME_LOCAL),
+                        end: moment(end).format(moment.HTML5_FMT.DATETIME_LOCAL),
+                        title,
+                        desc,
+                        employeeId: employee._id,
+                        customerId: customer._id
+                    }
+                },
+            });
+            console.log('setNewAppointment', {data});
+        } catch (e) {
+            console.log('erro', e);
+        }
     }
   
     //  Updates Existing Appointments Title and/or Description
-    const updateEvent = () => {
-      const index = events.findIndex(event => event === clickedEvent);
-      const updatedEvent = [...events];
-      updatedEvent[index] = { title, start, end, desc, employee, customer };
-      // localStorage.setItem("cachedEvents", JSON.stringify(updatedEvent));
-      setEvents(updatedEvent);
+    const updateEvent = async () => {
+        try {
+            const { data } = await editEvent({
+                variables: {
+                    id: clickedEvent._id,
+                    event: {
+                        start: moment(start).format(moment.HTML5_FMT.DATETIME_LOCAL),
+                        end: moment(end).format(moment.HTML5_FMT.DATETIME_LOCAL),
+                        title,
+                        desc,
+                        employeeId: employee._id,
+                        customerId: customer._id
+                    },
+                },
+            });
+            console.log('updateEvent', {data});
+        } catch (e) {
+            console.log('erro', e);
+        }
     }
   
     //  filters out specific event that is to be deleted and set that variable to state
-    const deleteEvent = () => {
-      let updatedEvents = events.filter(
-        event => event.start !== start
-      );
-      // localStorage.setItem("cachedEvents", JSON.stringify(updatedEvents));
-      setEvents(updatedEvents);
+    const deleteEvent = async () => {
+        try {
+            const { data } = await removeEvent({ variables: { id: clickedEvent._id } } );
+            if (data.removeEvent) {
+                console.log(data);
+            }
+        } catch(erro) {
+            console.log('erro', erro);
+        }
     }
 
     const handleStartTime = (date) => {
@@ -265,4 +305,6 @@ const MyCalendar = props => {
     </MuiPickersUtilsProvider>);
   };
 
-export default MyCalendar;
+export default compose(
+    eventsQuery, createEventMutation, editEventMutation, removeEventMutation
+)(MyCalendar);

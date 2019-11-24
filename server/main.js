@@ -6,11 +6,12 @@ import { UserTypeDefs, UserResolver } from '../imports/api/users';
 import { ServicesTypeDefs, ServicesResolver } from '../imports/api/services';
 import { EmployeeTypeDefs, EmployeeResolver } from '../imports/api/employees';
 import { CustomerTypeDefs, CustomerResolver } from '../imports/api/customers';
+import { EventTypeDefs, EventResolver } from '../imports/api/events';
 
 
 load({
-  typeDefs: [UserTypeDefs, ServicesTypeDefs, EmployeeTypeDefs, CustomerTypeDefs],
-  resolvers: [UserResolver, ServicesResolver, EmployeeResolver, CustomerResolver],
+  typeDefs: [UserTypeDefs, ServicesTypeDefs, EmployeeTypeDefs, CustomerTypeDefs, EventTypeDefs],
+  resolvers: [UserResolver, ServicesResolver, EmployeeResolver, CustomerResolver, EventResolver],
 });
 
 const schema = makeExecutableSchema(getSchema());

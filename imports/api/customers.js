@@ -86,8 +86,8 @@ export const CustomerResolver = {
         if (Roles.userIsInRole(id, usersRoles.CUSTOMER)) {
             Roles.removeUsersFromRoles(id, usersRoles.CUSTOMER);
             return UsersCollection.remove({ _id: id });
-		}
-		return 0;
+        }
+        return 0;
     },
 
   },
@@ -173,9 +173,8 @@ export const CUSTOMERS_SEARCH = gql`
       emails {
         address
         verified
-	  },
-	  roles
-    }
+	    }
+	  }
   }
 `;
 
@@ -194,8 +193,7 @@ export const GET_CUSTOMER = gql`
       emails {
         address
         verified
-	  },
-	  roles
-    }
+	    }
+	  }
   }
 `;
