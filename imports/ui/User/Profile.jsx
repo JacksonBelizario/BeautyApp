@@ -16,9 +16,9 @@ import { userQuery, editUser } from '../../api/users';
 import Loading from '../components/Loading'
 import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/green';
-import ZipCodeInput from './components/ZipCodeInput';
-import CpfInput from './components/CpfInput';
-import DateInput from './components/DateInput';
+import ZipCodeInput from '../components/inputs/ZipCodeInput';
+import CpfInput from '../components/inputs/CpfInput';
+import DateInput from '../components/inputs/DateInput';
 import { validator } from '../../utils/validators';
 import { consultarCEP } from '../../utils/cep';
 import Paper from '../components/Paper.jsx';

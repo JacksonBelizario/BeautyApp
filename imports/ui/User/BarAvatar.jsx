@@ -20,7 +20,6 @@ const exit = () =>
 const BarAvatarComponent = ({ userData: { user = {} } }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
-  console.log('UserAvatar', user);
   const { name, email } = user;
 
   const handleClose = () => setAnchorEl(null);

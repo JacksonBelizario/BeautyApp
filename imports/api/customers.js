@@ -57,11 +57,11 @@ export const CustomerResolver = {
         return Roles.getUsersInRole(usersRoles.CUSTOMER);
     },
     async searchCustomers(root, {filter}) {
-		var ids = Roles.getUserAssignmentsForRole(usersRoles.CUSTOMER).fetch().map(a => a.user._id);
-	
-		let filterRegex = new RegExp(filter, "i");
-		
-		return UsersCollection.find({$and: [{ _id: { $in: ids }}, { 'profile.name': filterRegex } ]});
+      const ids = Roles.getUserAssignmentsForRole(usersRoles.CUSTOMER).fetch().map(a => a.user._id);
+    
+      let filterRegex = new RegExp(filter, "i");
+      
+      return UsersCollection.find({$and: [{ _id: { $in: ids }}, { 'profile.name': filterRegex } ]});
     },
   },
 

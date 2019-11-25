@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import {
     Grid, Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem
 } from '@material-ui/core';
-import CpfInput from '../User/components/CpfInput';
-import DateInput from '../User/components/DateInput';
+import CpfInput from '../components/inputs/CpfInput';
+import DateInput from '../components/inputs/DateInput';
 import moment from 'moment';
 import { validator } from '../../utils/validators';
 import { createCustomerMutation, editCustomerMutation } from '../../api/customers';
@@ -193,7 +193,7 @@ const CustomerComponent = ({open, setOpen, dispatch, initial, createCustomer, ed
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">{_id ? 'Editar' : 'Novo'} Funcionário</DialogTitle>
             <DialogContent>
-                <Grid container spacing={8}>
+                <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                     <TextField
                         {...values.nome}

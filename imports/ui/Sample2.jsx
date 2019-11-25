@@ -165,7 +165,7 @@ const Services = ({classes}) => {
                                             direction="column"
                                             justify="center"
                                             alignItems="center"
-                                            spacing={8} >
+                                            spacing={2} >
                                             <Grid item>
                                                 <Link
                                                     aria-label="Editar"
@@ -221,20 +221,20 @@ const Services = ({classes}) => {
                                 direction="column"
                                 justify="flex-start"
                                 alignItems="flex-start"
-                                spacing={16} >
-                                <Grid item container spacing={16}>
+                                spacing={4} >
+                                <Grid item container spacing={4}>
                                     <Grid item xs={4} md={3}><b>Nome:</b></Grid>
                                     <Grid item xs={8} md={9}>{elements[active].name}</Grid>
                                 </Grid>
-                                <Grid item container spacing={16}>
+                                <Grid item container spacing={4}>
                                     <Grid item xs={4} md={3}><b>E-mail:</b></Grid>
                                     <Grid item xs={8} md={9}>{elements[active].email}</Grid>
                                 </Grid>
-                                <Grid item container spacing={16}>
+                                <Grid item container spacing={4}>
                                     <Grid item xs={4} md={3}><b>Telefone:</b></Grid>
                                     <Grid item xs={8} md={9}>{elements[active].phone}</Grid>
                                 </Grid>
-                                <Grid item container spacing={16}>
+                                <Grid item container spacing={4}>
                                     <Grid item xs={4} md={3}><b>Endereço:</b></Grid>
                                     <Grid item xs={8} md={9}>{elements[active].address}</Grid>
                                 </Grid>
@@ -248,7 +248,7 @@ const Services = ({classes}) => {
                         direction="column"
                         justify="center"
                         alignItems="center"
-                        spacing={24} >
+                        spacing={8} >
                         <Grid item>
                             <LoaderIcon size={124}  />
                         </Grid>

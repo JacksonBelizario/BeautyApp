@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import CustomerSelect from './components/CustomerSelect';
 import EmployeeSelect from './components/EmployeeSelect';
+import ServiceSelect from './components/ServiceSelect';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -47,15 +48,14 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
       return <Loading />;
     }
 
-    console.log({events});
-
     // const [events, setEvents] = useState([]);
     const [title, setTitle] = useState("");
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
     const [desc, setDesc] = useState("");
-    const [employee, setEmployee] = useState("");
-    const [customer, setCustomer] = useState("");
+    const [employee, setEmployee] = useState({});
+    const [customer, setCustomer] = useState({});
+    const [service, setService] = useState({});
     const [openSlot, setOpenSlot] = useState(false);
     const [openEvent, setOpenEvent] = useState(false);
     const [clickedEvent, setClicketEvent] = useState({});
@@ -84,7 +84,11 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
         setDesc(event.desc);
         setCustomer(event.customer);
         setEmployee(event.employee);
+        setService(event.service);
+        console.log("handleEventSelected", { service: event.service });
+        console.log("handleEventSelected2", { service });
     }
+    console.log({ service });
 
     // Onclick callback function that pushes new appointment into events array.
     const setNewAppointment = async () => {
@@ -97,7 +101,8 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
                         title,
                         desc,
                         employeeId: employee._id,
-                        customerId: customer._id
+                        customerId: customer._id,
+                        serviceId: service._id
                     }
                 },
             });
@@ -119,7 +124,8 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
                         title,
                         desc,
                         employeeId: employee._id,
-                        customerId: customer._id
+                        customerId: customer._id,
+                        serviceId: service._id
                     },
                 },
             });
@@ -141,19 +147,40 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
         }
     }
 
+    const handleEmployeeSelect = (value) => {
+        setEmployee(value);
+    };
+
+    const handleCustomerSelect = (value) => {
+        setCustomer(value);
+    };
+
+    const handleServiceSelect = (value) => {
+        setService(value);
+        setEnd(moment(start).add(value.duration || 0, 'minutes'));
+    };
+
+    const handleDesc = ({target: {value}}) => {
+        setDesc(value);
+    };
+
     const handleStartTime = (date) => {
         setStart(date);
+        if (!!service) {
+            setEnd(moment(start).add(service.duration || 0, 'minutes'));
+        }
       };
     
-    const handleEndTime = (date) => {
-        setEnd(date);
-    };
+      const handleEndTime = (date) => {
+          setEnd(date);
+      };
 
 
     return (<MuiPickersUtilsProvider utils={MomentUtils}>
         <Paper>
             <BigCalendar
                 localizer={localizer}
+                titleAccessor={ev => ev.service ? ev.service.name :  "serviço"}
                 events={events}
                 views={["month", "week", "day", "agenda"]}
                 messages={messages}
@@ -167,21 +194,21 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
         </Paper>
         {/* Material-ui Modal for booking new appointment */}
         <Dialog open={openSlot} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Agendar em: {moment(start).format(
-                    "DD MMMM, YYYY"
-                )}</DialogTitle>
+            <DialogTitle id="form-dialog-title">
+                Agendar em: {moment(start).format("LL")}
+            </DialogTitle>
             <DialogContent>
-            <Grid container direction="column">
-                <form autoComplete={"off"}>
-                    <EmployeeSelect
-                        onChange={(value) => {
-                            setEmployee(value);
-                        }} />
-                    <CustomerSelect
-                        onChange={(value) => {
-                            setCustomer(value);
-                        }} />
-                    <TextField
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <EmployeeSelect onChange={handleEmployeeSelect} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <CustomerSelect onChange={handleCustomerSelect} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <ServiceSelect onChange={handleServiceSelect} />
+                    </Grid>
+                    {/* <TextField
                         autoFocus
                         margin="dense"
                         label="Título"
@@ -190,33 +217,39 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
                         onChange={({target: {value}}) => {
                             setTitle(value);
                         }}
-                    />
-                    <TextField
-                        label="Descrição"
-                        fullWidth
-                        value={desc}
-                        onChange={({target: {value}}) => {
-                            setDesc(value);
-                        }}
-                    />
-                    <TimePicker
-                        margin="normal"
-                        label="Hora Inicial"
-                        cancelLabel="CANCELAR"
-                        ampm={false}
-                        value={start}
-                        onChange={handleStartTime}
-                    />
-                    <TimePicker
-                        margin="normal"
-                        label="Hora Final"
-                        cancelLabel="CANCELAR"
-                        ampm={false}
-                        value={end}
-                        onChange={handleEndTime}
-                    />
-                </form>
-            </Grid>
+                    /> */}
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Descrição"
+                            fullWidth
+                            value={desc}
+                            onChange={handleDesc}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TimePicker
+                            margin="normal"
+                            label="Hora Inicial"
+                            cancelLabel="CANCELAR"
+                            ampm={false}
+                            value={start}
+                            onChange={handleStartTime}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TimePicker
+                            margin="normal"
+                            label="Hora Final"
+                            cancelLabel="CANCELAR"
+                            ampm={false}
+                            value={end}
+                            // onChange={handleEndTime}
+                            fullWidth
+                            disabled={true}
+                        />
+                    </Grid>
+                </Grid>
             </DialogContent>
             <DialogActions>
             <Button onClick={handleClose}>
@@ -233,55 +266,68 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
 
         {/* Material-ui Modal for Existing Event */}
         <Dialog open={openEvent} onClose={handleClose} aria-labelledby="form-dialog-edit-title">
-            <DialogTitle id="form-dialog-edit-title">Ver/Editar agendamento: {moment(start).format(
-                    "DD MMMM, YYYY"
-                )}</DialogTitle>
+            <DialogTitle id="form-dialog-edit-title">
+                Ver/Editar agendamento: {moment(start).format("LL")}
+            </DialogTitle>
             <DialogContent>
-                <EmployeeSelect
-                    defaultValue={employee}
-                    onChange={(value) => {
-                        setEmployee(value);
-                    }} />
-                <CustomerSelect
-                    defaultValue={customer}
-                    onChange={(value) => {
-                        setCustomer(value);
-                    }} />
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    label="Título"
-                    value={title}
-                    fullWidth
-                    onChange={({target: {value}}) => {
-                        setTitle(value);
-                    }}
-                />
-                <br />
-                <TextField
-                    label="Descrição"
-                    value={desc}
-                    fullWidth
-                    onChange={({target: {value}}) => {
-                        setDesc(value);
-                    }}
-                />
-                <TimePicker
-                    margin="normal"
-                    label="Hora Inicial"
-                    cancelLabel="CANCELAR"
-                    ampm={false}
-                    value={start}
-                    onChange={handleStartTime}
-                />
-                <TimePicker
-                    margin="normal"
-                    label="Hora Final"
-                    cancelLabel="CANCELAR"
-                    ampm={false}
-                    value={end}
-                    onChange={handleEndTime}
-                />
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <EmployeeSelect
+                            defaultValue={employee}
+                            onChange={handleEmployeeSelect} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <CustomerSelect
+                            defaultValue={customer}
+                            onChange={handleCustomerSelect} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <ServiceSelect
+                            defaultValue={service}
+                            onChange={handleServiceSelect} />
+                    </Grid>
+                    {/* <TextField
+                        autoFocus
+                        margin="dense"
+                        label="Título"
+                        value={title}
+                        fullWidth
+                        onChange={({target: {value}}) => {
+                            setTitle(value);
+                        }}
+                    /> */}
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Descrição"
+                            value={desc}
+                            fullWidth
+                            onChange={handleDesc}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TimePicker
+                            margin="normal"
+                            label="Hora Inicial"
+                            cancelLabel="CANCELAR"
+                            ampm={false}
+                            value={start}
+                            onChange={handleStartTime}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TimePicker
+                            margin="normal"
+                            label="Hora Final"
+                            cancelLabel="CANCELAR"
+                            ampm={false}
+                            value={end}
+                            // onChange={handleEndTime}
+                            fullWidth
+                            disabled={true}
+                        />
+                    </Grid>
+                </Grid>
             </DialogContent>
             <DialogActions>
             <Button onClick={handleClose}>

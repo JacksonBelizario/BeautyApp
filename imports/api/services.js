@@ -10,6 +10,7 @@ export const ServicesTypeDefs = `
 type Query {
     services: [Service]
     service(id: String): Service
+    searchServices(filter: String): [Service]
 }
 
 type Mutation {
@@ -39,7 +40,12 @@ export const ServicesResolver = {
             return ServicesCollection.find().fetch();
         },
         async service(root, { id }) {
-            return ServicesCollection.find(id);
+            return ServicesCollection.findOne({ _id: id });
+        },
+        async searchServices(root, {filter}) {
+            let filterRegex = new RegExp(filter, "i");
+            
+            return ServicesCollection.find({ 'name': filterRegex });
         },
     },
 
@@ -131,3 +137,14 @@ export const removeServiceMutation = graphql(
         options: { refetchQueries },
     }
 );
+
+export const SERVICES_SEARCH = gql`
+  query searchServices($filter: String) {
+    searchServices(filter: $filter) {
+        _id
+        name
+        amount
+        duration
+    }
+  }
+`;

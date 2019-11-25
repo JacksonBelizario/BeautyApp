@@ -187,7 +187,7 @@ const Employees = ({classes, employeesData: { employees, loading }, removeEmploy
                                             direction="column"
                                             justify="center"
                                             alignItems="center"
-                                            spacing={8} >
+                                            spacing={2} >
                                             <Grid item>
                                                 <Link
                                                     aria-label="Editar"
@@ -240,20 +240,20 @@ const Employees = ({classes, employeesData: { employees, loading }, removeEmploy
                                 direction="column"
                                 justify="flex-start"
                                 alignItems="flex-start"
-                                spacing={16} >
-                                <Grid item container spacing={16}>
+                                spacing={2} >
+                                <Grid item container spacing={2}>
                                     <Grid item xs={4} md={3}><b>Nome:</b></Grid>
                                     <Grid item xs={8} md={9}>{funcionarios[active].profile.name}</Grid>
                                 </Grid>
-                                <Grid item container spacing={16}>
+                                <Grid item container spacing={2}>
                                     <Grid item xs={4} md={3}><b>Email:</b></Grid>
                                     <Grid item xs={8} md={9}>{funcionarios[active].emails[0].address}</Grid>
                                 </Grid>
-                                <Grid item container spacing={16}>
+                                <Grid item container spacing={2}>
                                     <Grid item xs={4} md={3}><b>Telefone:</b></Grid>
                                     <Grid item xs={8} md={9}>{funcionarios[active].profile.phoneNumber}</Grid>
                                 </Grid>
-                                <Grid item container spacing={16}>
+                                <Grid item container spacing={2}>
                                     <Grid item xs={4} md={3}><b>CPF:</b></Grid>
                                     <Grid item xs={8} md={9}>{funcionarios[active].profile.socialNumber}</Grid>
                                 </Grid>
@@ -267,7 +267,7 @@ const Employees = ({classes, employeesData: { employees, loading }, removeEmploy
                         direction="column"
                         justify="center"
                         alignItems="center"
-                        spacing={2} >
+                        spacing={1} >
                         <Grid item>
                             <LoaderIcon size={124}  />
                         </Grid>

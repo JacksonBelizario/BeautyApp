@@ -187,7 +187,7 @@ const Services = ({classes, servicesData: { services, loading }, removeService})
                                             direction="column"
                                             justify="center"
                                             alignItems="center"
-                                            spacing={8} >
+                                            spacing={2} >
                                             <Grid item>
                                                 <Link
                                                     aria-label="Editar"
@@ -240,18 +240,18 @@ const Services = ({classes, servicesData: { services, loading }, removeService})
                                 direction="column"
                                 justify="flex-start"
                                 alignItems="flex-start"
-                                spacing={16} >
-                                <Grid item container spacing={16}>
+                                spacing={2} >
+                                <Grid item container spacing={2}>
                                     <Grid item xs={4} md={3}><b>Nome:</b></Grid>
                                     <Grid item xs={8} md={9}>{servicos[active].name}</Grid>
                                 </Grid>
-                                <Grid item container spacing={16}>
+                                <Grid item container spacing={2}>
                                     <Grid item xs={4} md={3}><b>Valor:</b></Grid>
                                     <Grid item xs={8} md={9}>{servicos[active].amount}</Grid>
                                 </Grid>
-                                <Grid item container spacing={16}>
+                                <Grid item container spacing={2}>
                                     <Grid item xs={4} md={3}><b>Duração:</b></Grid>
-                                    <Grid item xs={8} md={9}>{servicos[active].duration}</Grid>
+                                    <Grid item xs={8} md={9}>{`${Math.floor(servicos[active].duration / 60)}:${(servicos[active].duration % 60).toString().padStart(2, '0')}`}</Grid>
                                 </Grid>
                             </Grid>
                         </CardContent>
@@ -263,7 +263,7 @@ const Services = ({classes, servicesData: { services, loading }, removeService})
                         direction="column"
                         justify="center"
                         alignItems="center"
-                        spacing={24} >
+                        spacing={1} >
                         <Grid item>
                             <LoaderIcon size={124}  />
                         </Grid>

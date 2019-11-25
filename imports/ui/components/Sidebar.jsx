@@ -26,7 +26,7 @@ const styles = theme => ({
         width: 250,
     },
     nested: {
-      margin: [[0, 20, 0, 4], '!important'],
+      margin: [[0, 10, 0, 4], '!important'],
     },
 });
 
@@ -122,7 +122,7 @@ const SidebarComponent = ({classes, history, showDrawer, setShowDrawer}) => {
                         <ListItemIcon>
                             {item.icon}
                         </ListItemIcon>
-                        <ListItemText inset primary={item.title} />
+                        <ListItemText primary={item.title} />
                         {list[index].open ? <ChevronDownIcon size={16} /> : <ChevronRightIcon size={16} />}
                     </ListItem>
                     <Collapse in={list[index].open} timeout="auto" unmountOnExit>

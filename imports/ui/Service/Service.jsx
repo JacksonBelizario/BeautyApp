@@ -5,6 +5,7 @@ import {
     Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle
 } from '@material-ui/core';
 import { createServiceMutation, editServiceMutation } from '../../api/services';
+import MoneyInput from '../components/inputs/MoneyInput';
 
 const ServiceComponent = ({open, setOpen, createService, editService, dispatch, initial}) => {
 
@@ -106,13 +107,16 @@ const ServiceComponent = ({open, setOpen, createService, editService, dispatch, 
                     onChange={({ target: { value } }) => {
                         setAmount(value);
                     }}
+                    InputProps={{
+                      inputComponent: MoneyInput,
+                    }}
                     fullWidth
                 />
                 <TextField
                     autoFocus
                     name="duration"
                     margin="dense"
-                    label="Duração"
+                    label="Duração (min)"
                     value={duration}
                     type="number"
                     onChange={({ target: { value } }) => {

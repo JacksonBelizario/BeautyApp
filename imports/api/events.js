@@ -3,6 +3,7 @@ import { Mongo } from "meteor/mongo";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import { UsersCollection } from "./users";
+import { ServicesCollection } from "./services";
 
 export const EventsCollection = new Mongo.Collection("events");
 
@@ -24,17 +25,26 @@ type Event {
     desc: String
     start: String
     end: String
-    customer: User!
-    employee: User!
+    customer: User
+    employee: User
+    service: Service
+}
+
+type Service {
+    _id: ID
+    name: String
+    amount: Float
+    duration: Float
 }
 
 input EventInput {
     title: String
     desc: String
-    start: String
-    end: String
-    customerId: String
-    employeeId: String
+    start: String!
+    end: String!
+    customerId: String!
+    employeeId: String!
+    serviceId: String!
 }
 `;
 
@@ -69,6 +79,9 @@ export const EventResolver = {
         async employee({employeeId}) {
             return UsersCollection.findOne({ _id: employeeId });
         },
+        async service({serviceId}) {
+            return ServicesCollection.findOne({ _id: serviceId });
+        },
     },
 };
 
@@ -91,6 +104,12 @@ const EVENTS_QUERY = gql`
                 profile {
                   name
                 }
+            }
+            service {
+                _id
+                name
+                amount
+                duration
             }
         }
     }

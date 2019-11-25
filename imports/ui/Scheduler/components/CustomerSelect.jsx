@@ -32,7 +32,6 @@ const CustomerSelect = ({client, defaultValue, onChange}) => {
         () =>
         debounce(async (input, callback) => {
             const {searchCustomers: customers} = await searchCustomers(input);
-            console.log({customers});
             callback(customers);
         }, 400),
         [],
@@ -77,6 +76,8 @@ const CustomerSelect = ({client, defaultValue, onChange}) => {
           getOptionLabel={option => option.profile.name}
           options={options}
           loading={loading}
+          loadingText={"Procurando"}
+          noOptionsText={"Digite para procurar"}
           renderInput={params => (
             <TextField
               {...params}
