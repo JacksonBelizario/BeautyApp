@@ -178,6 +178,7 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
         <Paper>
             <Calendar
                 localizer={localizer}
+                showMultiDayTimes
                 titleAccessor={ev => ev.service ? ev.service.name :  "serviço"}
                 startAccessor={ev => moment(ev.start).toDate()}
                 endAccessor={ev => moment(ev.end).toDate()}

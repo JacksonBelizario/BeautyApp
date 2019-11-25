@@ -94,3 +94,6 @@ select:focus {
     border-radius: 2rem;
     text-decoration: none;
 }
+.rbc-agenda-view {
+    flex: 1 0 !important;
+}
