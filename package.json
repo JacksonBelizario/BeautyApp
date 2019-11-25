@@ -37,7 +37,7 @@
     "query-string": "^6.3.0",
     "react": "^16.8.1",
     "react-apollo": "^2.4.1",
-    "react-big-calendar": "^0.20.4",
+    "react-big-calendar": "^0.23.0",
     "react-dom": "^16.8.1",
     "react-feather": "^1.1.6",
     "react-jss": "^8.6.1",

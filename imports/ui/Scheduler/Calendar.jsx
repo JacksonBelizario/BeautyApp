@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { compose } from 'recompose';
-import BigCalendar from 'react-big-calendar'
+import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from '../../utils/moment'
 import {
     Button, TextField, Grid,
@@ -18,7 +18,7 @@ import { eventsQuery, createEventMutation, editEventMutation, removeEventMutatio
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
-const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
+const localizer = momentLocalizer(moment) // or globalizeLocalizer
 
 const messages = {
     date: 'Data',
@@ -48,14 +48,15 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
       return <Loading />;
     }
 
-    // const [events, setEvents] = useState([]);
+    console.log({events});
+
     const [title, setTitle] = useState("");
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
     const [desc, setDesc] = useState("");
-    const [employee, setEmployee] = useState({});
-    const [customer, setCustomer] = useState({});
-    const [service, setService] = useState({});
+    const [employee, setEmployee] = useState("");
+    const [customer, setCustomer] = useState("");
+    const [service, setService] = useState("");
     const [openSlot, setOpenSlot] = useState(false);
     const [openEvent, setOpenEvent] = useState(false);
     const [clickedEvent, setClicketEvent] = useState({});
@@ -85,10 +86,7 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
         setCustomer(event.customer);
         setEmployee(event.employee);
         setService(event.service);
-        console.log("handleEventSelected", { service: event.service });
-        console.log("handleEventSelected2", { service });
     }
-    console.log({ service });
 
     // Onclick callback function that pushes new appointment into events array.
     const setNewAppointment = async () => {
@@ -167,7 +165,7 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
     const handleStartTime = (date) => {
         setStart(date);
         if (!!service) {
-            setEnd(moment(start).add(service.duration || 0, 'minutes'));
+            setEnd(moment(date).add(service.duration || 0, 'minutes'));
         }
       };
     
@@ -178,9 +176,11 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
 
     return (<MuiPickersUtilsProvider utils={MomentUtils}>
         <Paper>
-            <BigCalendar
+            <Calendar
                 localizer={localizer}
                 titleAccessor={ev => ev.service ? ev.service.name :  "serviço"}
+                startAccessor={ev => moment(ev.start).toDate()}
+                endAccessor={ev => moment(ev.end).toDate()}
                 events={events}
                 views={["month", "week", "day", "agenda"]}
                 messages={messages}
