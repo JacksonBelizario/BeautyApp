@@ -25,16 +25,10 @@ type Event {
     desc: String
     start: String
     end: String
+    status: Int
     customer: User
     employee: User
     service: Service
-}
-
-type Service {
-    _id: ID
-    name: String
-    amount: Float
-    duration: Float
 }
 
 input EventInput {
@@ -42,6 +36,7 @@ input EventInput {
     desc: String
     start: String!
     end: String!
+    status: Int
     customerId: String!
     employeeId: String!
     serviceId: String!
@@ -93,6 +88,7 @@ const EVENTS_QUERY = gql`
             desc
             start
             end
+            status
             customer {
                 _id
                 profile {

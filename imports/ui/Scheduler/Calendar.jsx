@@ -3,9 +3,10 @@ import { compose } from 'recompose';
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from '../../utils/moment'
 import {
-    Button, TextField, Grid,
-    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+    Button, TextField, Grid, Dialog, DialogActions, DialogContent, 
+    DialogContentText, DialogTitle, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio
 } from '@material-ui/core';
+import { withStyles } from '@material-ui/core';
 import CustomerSelect from './components/CustomerSelect';
 import EmployeeSelect from './components/EmployeeSelect';
 import ServiceSelect from './components/ServiceSelect';
@@ -39,9 +40,49 @@ const messages = {
     noEventsInRange: 'Não há eventos para o período escolhido.',
   
     showMore: total => `Mostrar +${total}`,
-  }
+}
 
-const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, removeEvent}) => {
+const stEnum = {
+    RESERVADO: 0,
+    CANCELADO: 1,
+    ATENDENDO: 2,
+    FINALIZADO: 3
+}
+
+const statusColor = ['#ffb822', '#f4516c', '#5867dd', '#34bfa3'];
+
+const style = theme => ({
+    statusCheckBox: {
+        justifyContent: "center"
+    },
+    reservado: {
+        color: statusColor[stEnum.RESERVADO],
+        '&$checked': {
+            color: statusColor[stEnum.RESERVADO],
+        },
+    },
+    cancelado: {
+        color: statusColor[stEnum.CANCELADO],
+        '&$checked': {
+            color: statusColor[stEnum.CANCELADO],
+        },
+    },
+    atendendo: {
+        color: statusColor[stEnum.ATENDENDO],
+        '&$checked': {
+            color: statusColor[stEnum.ATENDENDO],
+        },
+    },
+    finalizado: {
+        color: statusColor[stEnum.FINALIZADO],
+        '&$checked': {
+            color: statusColor[stEnum.FINALIZADO],
+        },
+    },
+    checked: {},
+});
+
+const MyCalendar = ({classes, eventsData: { events, loading }, createEvent, editEvent, removeEvent}) => {
 
     events = events || [];
     if (loading) {
@@ -57,6 +98,7 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
     const [employee, setEmployee] = useState("");
     const [customer, setCustomer] = useState("");
     const [service, setService] = useState("");
+    const [status, setStatus] = useState(stEnum.RESERVADO);
     const [openSlot, setOpenSlot] = useState(false);
     const [openEvent, setOpenEvent] = useState(false);
     const [clickedEvent, setClicketEvent] = useState({});
@@ -71,6 +113,7 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
     const handleSlotSelected = (slotInfo) => {
       setTitle("");
       setDesc("");
+      setStatus(0);
       setStart(slotInfo.start);
       setEnd(slotInfo.end);
       setOpenSlot(true);
@@ -86,6 +129,7 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
         setCustomer(event.customer);
         setEmployee(event.employee);
         setService(event.service);
+        setStatus(event.status || stEnum.RESERVADO);
     }
 
     // Onclick callback function that pushes new appointment into events array.
@@ -98,6 +142,7 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
                         end: moment(end).format(moment.HTML5_FMT.DATETIME_LOCAL),
                         title,
                         desc,
+                        status,
                         employeeId: employee._id,
                         customerId: customer._id,
                         serviceId: service._id
@@ -121,6 +166,7 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
                         end: moment(end).format(moment.HTML5_FMT.DATETIME_LOCAL),
                         title,
                         desc,
+                        status,
                         employeeId: employee._id,
                         customerId: customer._id,
                         serviceId: service._id
@@ -145,6 +191,16 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
         }
     }
 
+    const eventStyleGetter = (event, start, end, isSelected) => {
+        return {
+            style: {
+                backgroundColor: statusColor[parseInt(event.status || stEnum.RESERVADO)],
+                opacity: 0.8,
+                color: 'black',
+            }
+        };
+    };
+
     const handleEmployeeSelect = (value) => {
         setEmployee(value);
     };
@@ -167,11 +223,16 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
         if (!!service) {
             setEnd(moment(date).add(service.duration || 0, 'minutes'));
         }
-      };
+    };
     
-      const handleEndTime = (date) => {
-          setEnd(date);
-      };
+    const handleEndTime = (date) => {
+        setEnd(date);
+    };
+
+    const handleStatus = ({target: {value}}) => {
+        console.log("handleStatus", {value});
+        setStatus(value);
+    };
 
 
     return (<MuiPickersUtilsProvider utils={MomentUtils}>
@@ -191,6 +252,7 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
                 selectable
                 onSelectEvent={handleEventSelected}
                 onSelectSlot={handleSlotSelected}
+                eventPropGetter={(eventStyleGetter)}
             />
         </Paper>
         {/* Material-ui Modal for booking new appointment */}
@@ -273,6 +335,40 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
             <DialogContent>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
+                        <FormControl component="fieldset" fullWidth>
+                            <RadioGroup row
+                                className={classes.statusCheckBox} 
+                                aria-label="status" 
+                                name="status" 
+                                value={status} 
+                                onChange={handleStatus}>
+                                <FormControlLabel
+                                    className={classes.reservado}
+                                    value="0" control={<Radio classes={{root: classes.reservado, checked: classes.checked}} />}
+                                    label="Reservado"
+                                    labelPlacement="top" />
+                                <FormControlLabel
+                                    className={classes.cancelado}
+                                    value="1"
+                                    control={<Radio classes={{root: classes.cancelado, checked: classes.checked}} />}
+                                    label="Cancelado"
+                                    labelPlacement="top" />
+                                <FormControlLabel
+                                    className={classes.atendendo}
+                                    value="2"
+                                    control={<Radio classes={{root: classes.atendendo, checked: classes.checked}} />}
+                                    label="Atendendo"
+                                    labelPlacement="top" />
+                                <FormControlLabel
+                                    className={classes.finalizado}
+                                    value="3"
+                                    control={<Radio classes={{root: classes.finalizado, checked: classes.checked}} />}
+                                    label="Finalizado"
+                                    labelPlacement="top" />
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
                         <EmployeeSelect
                             defaultValue={employee}
                             onChange={handleEmployeeSelect} />
@@ -353,5 +449,6 @@ const MyCalendar = ({eventsData: { events, loading }, createEvent, editEvent, re
   };
 
 export default compose(
+    withStyles(style),
     eventsQuery, createEventMutation, editEventMutation, removeEventMutation
 )(MyCalendar);
