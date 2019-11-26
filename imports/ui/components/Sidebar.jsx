@@ -72,10 +72,10 @@ const menu = [
                 title: 'Serviços',
                 to: RouterPaths.SERVICES,
             },
-            {
-                title: 'Produtos',
-                to: RouterPaths.PRODUCTS,
-            },
+            // {
+            //     title: 'Produtos',
+            //     to: RouterPaths.PRODUCTS,
+            // },
         ]
     },
     {

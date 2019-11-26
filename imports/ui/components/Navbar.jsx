@@ -26,6 +26,7 @@ const styles = theme => ({
     },
     grow: {
         flexGrow: 1,
+        textDecoration: "none",
     },
     menuButton: {
         marginLeft: -12,
@@ -42,7 +43,7 @@ const styles = theme => ({
     },
 });
 
-function ButtonAppBar({classes, location: {pathname}}) {
+function ButtonAppBar({classes, history, location: {pathname}}) {
     const [showDrawer, setShowDrawer] = useState(false);
     return (
         <div className={classes.root}>
@@ -56,18 +57,15 @@ function ButtonAppBar({classes, location: {pathname}}) {
                     >
                         <MenuIcon/>
                     </IconButton>
-                    <Typography variant="h5" color="inherit" className={classes.grow}>
-                        {config.appName}
-                    </Typography>
+                    <Link to={RouterPaths.ROOT} className={classes.grow} color="inherit">
+                        <Typography variant="h5">
+                            {config.appName}
+                        </Typography>
+                    </Link>
                     {Meteor.userId() ? (<div>
                             <div className={classes.flex}>
                                 <IconButton color="inherit" className={classes.sectionDesktop}>
-                                    <Badge badgeContent={4} color="secondary">
-                                        <MailIcon />
-                                    </Badge>
-                                </IconButton>
-                                <IconButton color="inherit" className={classes.sectionDesktop}>
-                                    <Badge badgeContent={17} color="secondary">
+                                    <Badge badgeContent={0} color="secondary">
                                         <NotificationsIcon />
                                     </Badge>
                                 </IconButton>

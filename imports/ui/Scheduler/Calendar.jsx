@@ -129,7 +129,7 @@ const MyCalendar = ({classes, eventsData: { events, loading }, createEvent, edit
         setCustomer(event.customer);
         setEmployee(event.employee);
         setService(event.service);
-        setStatus(event.status || stEnum.RESERVADO);
+        setStatus((event.status || stEnum.RESERVADO) + "");
     }
 
     // Onclick callback function that pushes new appointment into events array.

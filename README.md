@@ -1,1 +1,1 @@
-AppBeleza
+BeautyScheduler

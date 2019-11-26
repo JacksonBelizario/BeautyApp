@@ -1,5 +1,5 @@
 {
-  "name": "appbeleza",
+  "name": "beautyscheduler",
   "private": true,
   "scripts": {
     "start": "cross-env MONGO_URL=\"mongodb://beauty-staging:gPu63BkV16D7aKJs@beautyapp-shard-00-00-waeqs.mongodb.net:27017,beautyapp-shard-00-01-waeqs.mongodb.net:27017,beautyapp-shard-00-02-waeqs.mongodb.net:27017/beauty?ssl=true&replicaSet=BeautyApp-shard-0&authSource=admin&retryWrites=true\" meteor run",
